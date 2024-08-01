@@ -2,47 +2,34 @@ use core::fmt;
 
 #[derive(Debug, PartialEq)]
 pub struct Clock {
-    hours: i32,
     minutes: i32,
 }
 
 impl Clock {
-    pub fn new(mut hours: i32, mut minutes: i32) -> Self {
-
-        // Add 1 hour for every full 60min
-        hours += minutes / 60;
-
-        // Remove excess minutes
-        minutes = minutes % 60;
-
-        // Roll 1 hour back if minutes are negative
-        if minutes < 0 {
-            hours -= 1;
-            minutes += 60;
+    pub fn new(hours: i32, minutes: i32) -> Self {
+        Clock {
+            minutes: (minutes + hours * 60).rem_euclid(1440),
         }
-
-        // Make hours always under 24
-        hours %= 24;
-
-        // ...and finally turn negative hours into positive
-        if hours < 0 {
-            hours += 24;
-        }
-
-        Clock { hours, minutes }
     }
 
     pub fn add_minutes(&self, minutes: i32) -> Self {
-        Clock::new(self.hours, self.minutes + minutes)
+        Clock::new(0, self.minutes + minutes)
     }
 }
 
 impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}:{}", zero_padding(self.hours), zero_padding(self.minutes))
+        let hours = (self.minutes / 60) % 24;
+        let leftover_minutes = self.minutes % 60;
+
+        write!(
+            f,
+            "{}:{}",
+            zero_padding(hours),
+            zero_padding(leftover_minutes)
+        )
     }
 }
-
 
 pub fn zero_padding(value: i32) -> String {
     format!("{:0>2}", value)
