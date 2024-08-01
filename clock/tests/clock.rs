@@ -10,19 +10,16 @@ fn on_the_hour() {
 }
 
 #[test]
-#[ignore]
 fn past_the_hour() {
     assert_eq!(Clock::new(11, 9).to_string(), "11:09");
 }
 
 #[test]
-#[ignore]
 fn midnight_is_zero_hours() {
     assert_eq!(Clock::new(24, 0).to_string(), "00:00");
 }
 
 #[test]
-#[ignore]
 fn hour_rolls_over() {
     assert_eq!(Clock::new(25, 0).to_string(), "01:00");
 }
@@ -112,7 +109,6 @@ fn negative_sixty_minutes_is_prev_hour() {
 }
 
 #[test]
-#[ignore]
 fn negative_one_twenty_minutes_is_two_prev_hours() {
     assert_eq!(Clock::new(1, -120).to_string(), "23:00");
 }
